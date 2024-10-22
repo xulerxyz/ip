@@ -7,7 +7,7 @@ class IpAddress
 
     /**
      * Get IP Address
-     * @return string|null
+     * @return string
      */
     public function getIp()
     {
@@ -21,7 +21,9 @@ class IpAddress
                 }
             }
         }
-        return null;
+
+        // fall back to localhost/127.0.0.1 when IP Address is not found
+        return "127.0.0.1";
     }
 
     /**
@@ -64,5 +66,22 @@ class IpAddress
 
         return true;
     }
+
+    /**
+     * Check if the visitor's IP address is within any of the allowed ranges
+     * @param array $allowedRanges
+     * @param string $ip
+     * @return bool
+     */
+    function checkVisitorIpInRange(array $allowedRanges, string $ip)
+    {
+        foreach ($allowedRanges as $range) {
+            if ($this->ipInRange($ip, $range)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
