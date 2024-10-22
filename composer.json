@@ -1,0 +1,19 @@
+{
+    "name": "nigel/ip",
+    "description": "Package to get IP address and check if IP address is in your range of allowed addresses",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Nigel\\Ip\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nigel Jaure",
+            "email": "me@xuler.xyz"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
