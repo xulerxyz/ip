@@ -1,6 +1,6 @@
 {
     "name": "nigel/ip",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Package to get IP address and check if IP address is in your range of allowed addresses",
     "type": "library",
     "license": "MIT",
