@@ -42,24 +42,38 @@ class IpAddress
      */
     private function ipInRange($ip, $range)
     {
-        list($subnet, $bits) = explode('/', $range);
+        // Attempt to split the range into subnet and bits
+        $parts = explode('/', $range);
+
+        // Ensure that the range contains both subnet and bits
+        if (count($parts) != 2) {
+            return false; // Invalid range format
+        }
+
+        list($subnet, $bits) = $parts;
 
         // Validate IP subnet format
         if (!filter_var($subnet, FILTER_VALIDATE_IP)) {
-            return false;
+            return false; // Invalid IP format
         }
 
         // Validate bits
         if (!is_numeric($bits) || $bits < 0 || $bits > 32) {
-            return false;
+            return false; // Invalid bits format
         }
 
+        // Convert IP to long integer
         $ip = ip2long($ip);
         $subnet = ip2long($subnet);
+
+        // Calculate the subnet mask
         $mask = -1 << (32 - $bits);
-        $subnet &= $mask; // Calculate the network address
+        $subnet &= $mask; // Apply the mask to the subnet
+
+        // Check if the IP is within the range
         return ($ip & $mask) == $subnet;
     }
+
 
     /**
      * Validate IP address
