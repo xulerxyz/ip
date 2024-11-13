@@ -42,37 +42,37 @@ class IpAddress
      */
     private function ipInRange($ip, $range)
     {
-        // Attempt to split the range into subnet and bits
+        // Check if it's a valid IP address and if it's already in the range
+        if (filter_var($range, FILTER_VALIDATE_IP)) {
+            return $ip === $range;
+        }
+    
+        // If the range is a CIDR notation
         $parts = explode('/', $range);
-
-        // Ensure that the range contains both subnet and bits
+    
         if (count($parts) != 2) {
             return false; // Invalid range format
         }
-
+    
         list($subnet, $bits) = $parts;
-
-        // Validate IP subnet format
-        if (!filter_var($subnet, FILTER_VALIDATE_IP)) {
-            return false; // Invalid IP format
+    
+        // Validate subnet and bits
+        if (!filter_var($subnet, FILTER_VALIDATE_IP) || !is_numeric($bits) || $bits < 0 || $bits > 32) {
+            return false;
         }
-
-        // Validate bits
-        if (!is_numeric($bits) || $bits < 0 || $bits > 32) {
-            return false; // Invalid bits format
-        }
-
+    
         // Convert IP to long integer
         $ip = ip2long($ip);
         $subnet = ip2long($subnet);
-
-        // Calculate the subnet mask
+    
+        // Calculate subnet mask
         $mask = -1 << (32 - $bits);
-        $subnet &= $mask; // Apply the mask to the subnet
-
+        $subnet &= $mask;
+    
         // Check if the IP is within the range
         return ($ip & $mask) == $subnet;
     }
+    
 
 
     /**
